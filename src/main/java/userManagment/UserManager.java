@@ -7,7 +7,7 @@ import java.io.*;
  * Created by Wojtek on 2014-07-14.
  * Klasa singletonowa
  */
-public class UserManager {
+public class UserManager implements Manager{
 
     private static UserManager entity;
 
@@ -26,15 +26,15 @@ public class UserManager {
             System.out.println("Użytkownik o podanej nazwie istnieje.");
             return found;
         }
-        User addedUser = new User(username, id);
-        addToBase(addedUser);
+        User addUser = new User(username, id);
+        addToBase(addUser);
         System.out.println("Dodano użytkownika: " + username + " o identyfikatorze " + id);
-        return addedUser;
+        return addUser;
     };
-    public Boolean modifyUser(User toBeModified, String newUsername, Integer newID){
+    public void modifyUser(User toBeModified, String newUsername, Integer newID){
         if (search(toBeModified.getName())==null || search(newUsername)!=null) {
             System.out.println("Użytkownik o podanej nazwie nie istnieje lub nowa nazwa jest zajeta.");
-            return false;
+            return;
         }
 
         deleteFromBase(toBeModified.getName());
@@ -42,16 +42,14 @@ public class UserManager {
         toBeModified.setId(newID);
         toBeModified.setName(newUsername);
         addToBase(toBeModified);
-        return true;
     };
-    public Boolean deleteUser(User toBeDeleted){
+    public void deleteUser(User toBeDeleted){
         if(search(toBeDeleted.getName()) == null) {
             System.out.println("Nie ma użytkownika o podanej nazwie");
-            return false;
+            return;
         }
         deleteFromBase(toBeDeleted.getName());
         System.out.println( "Usunięto użytkownika: " + toBeDeleted.getName());
-        return true;
     };
     public User findUser(String username){
         Integer usersID = search(username);
@@ -60,11 +58,12 @@ public class UserManager {
         }
         return new User(username, usersID);
     };
-    public Boolean list(){
+    public void list(){
+        BufferedReader in = null;
         try {
             File fileDir = new File("baza.txt");
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
             String str;
 
             while ((str = in.readLine()) != null) {
@@ -84,8 +83,16 @@ public class UserManager {
         catch (Exception e)
         {
             System.out.println(e.getMessage() + "!!!");
+        }finally{
+            if (in !=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return true;
+        return;
     };
 
     private Integer search(String username){
@@ -130,7 +137,7 @@ public class UserManager {
         }
         return null;
     };
-    private Boolean addToBase(User toBeAdded) throws Exception {
+    private Boolean addToBase(User toBeAdded){
         BufferedWriter fbw = null;
         try{
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream("baza.txt", true), "UTF-8");
@@ -140,16 +147,22 @@ public class UserManager {
 
         }catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            throw new Exception("Nie można dodać użytkownika", e);
         }finally{
             if (fbw!= null) {
-                fbw.close();
+                try {
+                    fbw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         return true;
     };
     private Boolean deleteFromBase(String username){
+        BufferedReader br = null;
+        PrintWriter pw = null;
+
         try {
             File inFile = new File("baza.txt");
             if (!inFile.isFile()) {
@@ -158,8 +171,8 @@ public class UserManager {
             }
             //Construct the new file that will later be renamed to the original filename.
             File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
-            BufferedReader br = new BufferedReader(new FileReader("baza.txt"));
-            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+            br = new BufferedReader(new FileReader("baza.txt"));
+            pw = new PrintWriter(new FileWriter(tempFile));
             String line = null;
             //Read from the original file and write to the new
             //unless content matches data to be removed.
@@ -190,6 +203,18 @@ public class UserManager {
         }
         catch (IOException ex) {
             ex.printStackTrace();
+        }finally {
+
+            if(pw!=null) {
+                pw.close();
+            }
+            if(br!=null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return true;
