@@ -5,7 +5,7 @@ package userManagment;
  */
 public interface Manager {
     public User addUser(String username, Integer id);
-    public void modifyUser(User toBeModified, String newUsername, Integer newID);
+    public void modifyUser(User toBeModified, String newUsername, Integer age);
     public void deleteUser(User toBeDeleted);
     public User findUser(String username);
     public void list();
