@@ -3,9 +3,7 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.5
 version = '1.0'
-
-
-mainClassName = 'App'
+mainClassName = 'application.App'
 
 
 repositories {
@@ -16,13 +14,12 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile 'com.google.guava:guava:14.0.1'
     compile 'org.mongodb:mongo-java-driver:2.10.1'
-
     //compile fileTree(dir: 'src/libs', include: '*.jar')
 }
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '2.0'
 }
 
 run{
@@ -35,4 +32,10 @@ run{
 
 configurations {
     compile
+}
+
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest { attributes 'Main-Class': 'application.App' }
 }
