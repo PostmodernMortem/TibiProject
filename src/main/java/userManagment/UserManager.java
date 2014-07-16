@@ -39,7 +39,7 @@ public class UserManager implements Manager{
 
         deleteFromBase(toBeModified.getName());
         System.out.println("Zmodyfikowano użytkownika: " + toBeModified.getName() + " na " + newUsername + " i nadano identyfikator " + newID);
-        toBeModified.setId(newID);
+        toBeModified.setAge(newID);
         toBeModified.setName(newUsername);
         addToBase(toBeModified);
     };
@@ -68,7 +68,7 @@ public class UserManager implements Manager{
 
             while ((str = in.readLine()) != null) {
                 User toCheck = new User(str);
-                System.out.println(toCheck.getName() + ", ID: " + toCheck.getId());
+                System.out.println(toCheck.getName() + ", ID: " + toCheck.getAge());
             }
             in.close();
         }
@@ -109,7 +109,7 @@ public class UserManager implements Manager{
                 User toCheck = new User(str);
                 if(toCheck.getName().equals(username)){
 
-                    return toCheck.getId();
+                    return toCheck.getAge();
                 }
             }
 

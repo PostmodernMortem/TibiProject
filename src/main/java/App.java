@@ -1,10 +1,7 @@
-import com.mongodb.*;
 import userManagment.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.UnknownHostException;
-import java.util.List;
 
 public class App {
 
@@ -46,7 +43,7 @@ public class App {
             if (numberOfArguments == 0) {
                 consoleInterface();
             }else {
-                UserManager myManager = UserManager.getEntity();
+                Manager myManager = UserManager.getEntity();
                 if (args[0].equals("ADD") &&numberOfArguments == 3) {
                     myManager.addUser(args[1], Integer.parseInt(args[2]));
                 }else if (args[0].equals("delete") &&numberOfArguments == 2){
@@ -94,7 +91,7 @@ public class App {
                     String name = br.readLine();
                     System.out.println("Podaj nową nazwe uzytkowika: ");
                     String newName = br.readLine();
-                    System.out.print("Podaj nowe ID (Integer): ");
+                    System.out.print("Podaj nowy wiek (Integer): ");
                     try {
                         Integer id = Integer.parseInt(br.readLine());
                         myManager.modifyUser(myManager.findUser(name), newName, id);
@@ -114,7 +111,7 @@ public class App {
 
                     } else {
 
-                        System.out.println("Znaleziono użytkownika: " + found.getName() + ", jego identyfikator to " + found.getId());
+                        System.out.println("Znaleziono użytkownika: " + found.getName() + ", jego wiek to " + found.getAge());
                     }
                 } else if (s.equals("list")) {
                     myManager.list();
@@ -124,6 +121,7 @@ public class App {
         } catch (IOException e) {
             System.err.println("Wystąpił wyjątek");
         } catch (NullPointerException e){
+            e.printStackTrace();
             System.err.println("Lapie null pointera");
         }
 
