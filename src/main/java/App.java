@@ -43,7 +43,7 @@ public class App {
             if (numberOfArguments == 0) {
                 consoleInterface();
             }else {
-                Manager myManager = UserManager.getEntity();
+                Manager myManager = UserManagerProvider.getManager();
                 if (args[0].equals("ADD") &&numberOfArguments == 3) {
                     myManager.addUser(args[1], Integer.parseInt(args[2]));
                 }else if (args[0].equals("delete") &&numberOfArguments == 2){
@@ -75,11 +75,11 @@ public class App {
         try {
             String s = br.readLine();
 
-                Manager myManager = DatabaseUserManager.getEntity();
+                Manager myManager = UserManagerProvider.getManager();
                 if (s.equals("add")) {
                     System.out.println("Podaj nazwe uzytkowika: ");
                     String name = br.readLine();
-                    System.out.print("Podaj ID (Integer): ");
+                    System.out.print("Podaj wiek (Integer): ");
                     try {
                         Integer id = Integer.parseInt(br.readLine());
                         myManager.addUser(name, id);

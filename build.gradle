@@ -32,3 +32,7 @@ run{
         args Eval.me(appArgs)
     }
 }
+
+configurations {
+    compile
+}

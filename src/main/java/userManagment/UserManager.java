@@ -13,7 +13,7 @@ public class UserManager implements Manager{
 
     /**Konstruktor prywatny*/
     private UserManager(){};
-    public static UserManager getEntity(){
+    static UserManager getEntity(){
         if(entity == null)
             entity = new UserManager();
 

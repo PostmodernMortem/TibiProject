@@ -11,7 +11,7 @@ public class DatabaseUserManager implements Manager{
 
     private static DatabaseUserManager entity=null;
 
-    public static DatabaseUserManager getEntity(){
+    static DatabaseUserManager getEntity(){
         if(entity==null){
             entity = new DatabaseUserManager();
         }
