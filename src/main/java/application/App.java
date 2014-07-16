@@ -47,7 +47,7 @@ public class App {
                 consoleInterface();
             }else {
                 Manager myManager = UserManagerProvider.getManager();
-                if (args[0].equals("ADD") &&numberOfArguments == 3) {
+                if (args[0].equals("add") &&numberOfArguments == 3) {
                     myManager.addUser(args[1], Integer.parseInt(args[2]));
                 }else if (args[0].equals("delete") &&numberOfArguments == 2){
                     myManager.deleteUser(myManager.findUser(args[1]));
