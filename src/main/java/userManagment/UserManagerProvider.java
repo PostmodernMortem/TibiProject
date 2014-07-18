@@ -25,6 +25,9 @@ public class UserManagerProvider {
                 entity = UserManager.getEntity();
             }else if(dbOption.equals("db")){
                 entity = DatabaseUserManager.getEntity();
+            }else if(dbOption.equals("hibernate")) {
+                entity = HibernateUserManager.getEntity();
+            }else{
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
