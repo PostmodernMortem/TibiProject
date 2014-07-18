@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Created by Wojtek on 2014-07-17.
  */
+//TODO
 public class HibernateUserManager implements Manager{
 
     private static HibernateUserManager entity;

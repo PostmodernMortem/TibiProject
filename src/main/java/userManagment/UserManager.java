@@ -2,6 +2,8 @@ package userManagment;
 
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Wojtek on 2014-07-14.
@@ -56,7 +58,8 @@ public class UserManager implements Manager{
         }
         return new User(username, usersID);
     };
-    public void list(){
+    public List<User> list(){
+        ArrayList<User> userList = new ArrayList<User>();
         BufferedReader in = null;
         try {
             File fileDir = new File("baza.txt");
@@ -67,6 +70,7 @@ public class UserManager implements Manager{
             while ((str = in.readLine()) != null) {
                 User toCheck = new User(str);
                 System.out.println(toCheck.getName() + ", ID: " + toCheck.getAge());
+                userList.add(toCheck);
             }
             in.close();
         }
@@ -90,7 +94,7 @@ public class UserManager implements Manager{
                 }
             }
         }
-        return;
+        return userList;
     };
 
     private Integer search(String username){

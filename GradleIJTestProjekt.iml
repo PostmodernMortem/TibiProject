@@ -77,6 +77,8 @@
     <orderEntry type="library" exported="" name="Gradle: asm-analysis-4.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: asm-util-4.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: parboiled-java-1.1.6" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: hibernate-infinispan-4.0.1.Final" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gson-2.2.4" level="project" />
   </component>
 </module>
 

@@ -3,6 +3,9 @@ package userManagment;
 import com.mongodb.*;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import com.google.gson.Gson;
 
 /**
  * Created by Wojtek on 2014-07-15.
@@ -93,7 +96,8 @@ public class DatabaseUserManager implements Manager{
         return toReturn;
     }
 
-    public void list() {
+    public List<User> list() {
+        ArrayList<User> userList = new ArrayList<User>();
         DBCollection table = null;
         try {
             table = openDbConnection();
@@ -101,13 +105,15 @@ public class DatabaseUserManager implements Manager{
             //searchQuery.put("name");
 
             DBCursor cursor = table.find(searchQuery);
-
+            Gson gson = new Gson();
             while (cursor.hasNext()) {
+                userList.add(gson.fromJson(cursor.toString(),User.class));
                 System.out.println(cursor.next());
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+        return userList;
     }
 
     private DatabaseUserManager(){};

@@ -20,7 +20,8 @@ dependencies {
     compile 'org.jboss.spec.javax.transaction:jboss-transaction-api_1.1_spec:1.0.0.Final'
     compile 'org.jboss.jbossts:jbossjta:4.16.4.Final'
     compile 'org.hibernate:hibernate-infinispan:4.0.1.Final'
-    'javax.servlet:javax.servlet-api:3.0.1'
+    compile 'com.google.code.gson:gson:2.2.4'
+
 
 
     //compile fileTree(dir: 'src/libs', include: '*.jar')
