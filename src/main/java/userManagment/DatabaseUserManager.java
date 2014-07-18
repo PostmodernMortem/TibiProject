@@ -18,34 +18,34 @@ public class DatabaseUserManager implements Manager{
         return entity;
     }
 
-    public User addUser(String username, Integer age) {
-        if(findUser(username)!=null){
+    public void addUser(User toAdd) {
+        if(findUser(toAdd.getName())!=null){
             System.out.println("Podany użytkownik istnieje");
-            return null;
+            return;
         }
         try {
             DBCollection table = openDbConnection();
             /**** Insert ****/
             BasicDBObject document = new BasicDBObject();
-            document.put("name", username);
-            document.put("age", age);
+            document.put("name", toAdd.getName());
+            document.put("age", toAdd.getAge());
             table.insert(document);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        return new User(username,age);
+        return;
     }
 
-    public void modifyUser(User toBeModified, String newUsername, Integer age) {
+    public void modifyUser(String id, User toBeModified) {
         try {
             DBCollection table = openDbConnection();
             /**** Update ****/
             BasicDBObject query = new BasicDBObject();
-            query.put("name", toBeModified.getName());
+            query.put("name", id);
 
             BasicDBObject newDocument = new BasicDBObject();
-            newDocument.put("name", newUsername);
-            newDocument.put("age", age);
+            newDocument.put("name", toBeModified.getName());
+            newDocument.put("age", toBeModified.getAge());
 
             BasicDBObject updateObj = new BasicDBObject();
             updateObj.put("$set", newDocument);

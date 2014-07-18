@@ -51,11 +51,10 @@ public class HibernateUserManager implements Manager{
         return null;
     }
 
-    public User addUser(String username, Integer age) {
+    public void addUser(User toAdd) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
         EntityManager em = null;
-        User toAdd= new User(username, age);
-
+        System.out.print(toAdd.toString());
         try {
             tm.begin();
             em = emf.createEntityManager();
@@ -74,15 +73,67 @@ public class HibernateUserManager implements Manager{
                 emf.close();
             }
         }
-        return toAdd;
     }
 
-    public void modifyUser(User toBeModified, String newUsername, Integer age) {
+    public void modifyUser(String username, User toBeModified) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
+        EntityManager em = null;
 
+        try {
+            User temporary = findUser(username);
+            if( temporary == null){
+                System.out.println("Nie znaleziono uzytkownika");
+            }
+            tm.begin();
+            em = emf.createEntityManager();
+            //em.persist(temporary);
+            temporary.setName(toBeModified.getName());
+            temporary.setAge(toBeModified.getAge());
+
+            em.persist(em.contains(temporary) ? temporary : em.merge(temporary));
+            em.flush();
+            tm.commit();
+
+
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }finally {
+            if(em !=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
+        }
     }
 
     public void deleteUser(User toBeDeleted) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
+        EntityManager em = null;
 
+        try {
+            User temporary = findUser(toBeDeleted.getName());
+            if( temporary != null){
+               System.out.println(temporary.getId());
+            }
+            tm.begin();
+            em = emf.createEntityManager();
+            //em.persist(temporary);
+            em.remove(em.contains(temporary) ? temporary : em.merge(temporary));
+            em.flush();
+            tm.commit();
+
+
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }finally {
+            if(em !=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
+        }
     }
 
     public User findUser(String username) {
@@ -116,11 +167,9 @@ public class HibernateUserManager implements Manager{
             String query4 = "db.User.find({'name': '"+username + "'})";
 
             toFind = (User)em.createNativeQuery( query4, User.class).getSingleResult();
-//            System.out.println("******************WYJSCIE*************");
-//            for (Object x :count)
-//            System.out.println(x.toString());
-//            for (Object x : result)
-//                System.out.println(x.toString() + "iteracja");
+            System.out.println("******************WYJSCIE*************");
+
+            System.out.println(toFind.toString());
 
 //            em.getTransaction().commit();
 
@@ -143,6 +192,57 @@ public class HibernateUserManager implements Manager{
     }
 
     public void list() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
+        EntityManager em = null;
 
+        try {
+            tm.begin();
+
+            em = emf.createEntityManager();
+
+//            Session session = (org.hibernate.Session)em.getDelegate();
+//            final FullTextSession fullTextSession = Search.getFullTextSession(session);
+//            fullTextSession.createIndexer().startAndWait();
+//
+//            FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
+//            em.getTransaction().begin();
+//
+//            QueryBuilder qb = fullTextEntityManager.getSearchFactory()
+//                    .buildQueryBuilder().forEntity(User.class).get();
+//            org.apache.lucene.search.Query luceneQuery = qb
+//                    .keyword()
+//                    .onFields("name")
+//                    .matching("Hubert")
+//                    .createQuery();
+//
+//            javax.persistence.Query jpaQuery =
+//                    fullTextEntityManager.createFullTextQuery(luceneQuery, User.class);
+
+            String query4 = "db.User.find({})";
+
+            List<User> result = em.createNativeQuery( query4, User.class).getResultList();
+//            System.out.println("******************WYJSCIE*************");
+//            for (Object x :count)
+//            System.out.println(x.toString());
+            System.out.println("*********LISTA UZYTKOWNIKOW****************");
+            for (User x : result)
+                System.out.println(x.toString());
+            System.out.println("*******************************************");
+//            em.getTransaction().commit();
+
+
+            //toFind = em.find( User.class, username);
+            tm.commit();
+
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }finally {
+            if(em !=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
+        }
     }
 }

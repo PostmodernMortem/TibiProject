@@ -20,27 +20,25 @@ public class UserManager implements Manager{
             return entity;
     };
 
-    public User addUser(String username, Integer id){
-        User found = findUser(username);
-        if (findUser(username)!=null) {
+    public void addUser(User toBeAdded){
+        User found = findUser(toBeAdded.getName());
+        if (found!=null) {
             System.out.println("Użytkownik o podanej nazwie istnieje.");
-            return found;
+            return;
         }
-        User addUser = new User(username, id);
-        addToBase(addUser);
-        System.out.println("Dodano użytkownika: " + username + " o identyfikatorze " + id);
-        return addUser;
+
+        addToBase(toBeAdded);
+        System.out.println("Dodano użytkownika: " + toBeAdded.getName() + " o identyfikatorze " + toBeAdded.getAge());
+        return;
     };
-    public void modifyUser(User toBeModified, String newUsername, Integer newID){
-        if (search(toBeModified.getName())==null || search(newUsername)!=null) {
+    public void modifyUser(String id, User toBeModified){
+        if (search(id)==null || search(toBeModified.getName())!=null) {
             System.out.println("Użytkownik o podanej nazwie nie istnieje lub nowa nazwa jest zajeta.");
             return;
         }
 
-        deleteFromBase(toBeModified.getName());
-        System.out.println("Zmodyfikowano użytkownika: " + toBeModified.getName() + " na " + newUsername + " i nadano identyfikator " + newID);
-        toBeModified.setAge(newID);
-        toBeModified.setName(newUsername);
+        deleteFromBase(id);
+        System.out.println("Zmodyfikowano użytkownika: " + toBeModified.getName() + " na " + toBeModified.getName() + " i nadano identyfikator " + toBeModified.getAge());
         addToBase(toBeModified);
     };
     public void deleteUser(User toBeDeleted){

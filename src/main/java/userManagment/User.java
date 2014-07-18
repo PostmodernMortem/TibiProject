@@ -34,7 +34,7 @@ public class User{
 
     ;
 
-    User(String name, Integer age) {
+    public User(String name, Integer age) {
         this.age = age;
         this.name = name;
     }

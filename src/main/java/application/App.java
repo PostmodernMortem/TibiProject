@@ -48,7 +48,7 @@ public class App {
             }else {
                 Manager myManager = UserManagerProvider.getManager();
                 if (args[0].equals("add") &&numberOfArguments == 3) {
-                    myManager.addUser(args[1], Integer.parseInt(args[2]));
+                    myManager.addUser(new User(args[1], Integer.parseInt(args[2])));
                 }else if (args[0].equals("delete") &&numberOfArguments == 2){
                     myManager.deleteUser(myManager.findUser(args[1]));
                 }else if (args[0].equals("find") &&numberOfArguments == 2) {
@@ -56,7 +56,7 @@ public class App {
                 }else if (args[0].equals("list") &&numberOfArguments == 1) {
                     myManager.list();
                 }else if (args[0].equals("update") &&numberOfArguments == 4){
-                    myManager.modifyUser(myManager.findUser(args[1]), args[2], Integer.parseInt(args[3]));
+                    myManager.modifyUser(args[1], new User(args[2], Integer.parseInt(args[3])));
                 }else{
                         System.out.println("Nieprawidłowa liczba argumentów.");
                 }
@@ -85,7 +85,7 @@ public class App {
                     System.out.print("Podaj wiek (Integer): ");
                     try {
                         Integer id = Integer.parseInt(br.readLine());
-                        myManager.addUser(name, id);
+                        myManager.addUser(new User(name, id));
                     } catch (NumberFormatException nfe) {
                         System.err.println("Invalid Format!");
                     }
@@ -97,7 +97,7 @@ public class App {
                     System.out.print("Podaj nowy wiek (Integer): ");
                     try {
                         Integer id = Integer.parseInt(br.readLine());
-                        myManager.modifyUser(myManager.findUser(name), newName, id);
+                        myManager.modifyUser(name, new User(newName, id));
                     } catch (NumberFormatException nfe) {
                         System.err.println("Invalid Format!");
                     }
