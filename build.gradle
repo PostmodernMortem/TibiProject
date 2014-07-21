@@ -11,8 +11,8 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile 'com.google.guava:guava:14.0.1'
+    compile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.google.guava:guava:14.0.1'
     compile 'org.mongodb:mongo-java-driver:2.10.1'
     compile 'org.hibernate.ogm:hibernate-ogm-infinispan:+'
     compile 'org.hibernate.ogm:hibernate-ogm-mongodb:+'
@@ -21,6 +21,8 @@ dependencies {
     compile 'org.jboss.jbossts:jbossjta:4.16.4.Final'
     compile 'org.hibernate:hibernate-infinispan:4.0.1.Final'
     compile 'com.google.code.gson:gson:2.2.4'
+
+    testCompile 'org.testng:testng:6.1.1'
 
 
 
@@ -50,3 +52,6 @@ jar {
     manifest { attributes 'Main-Class': 'application.App' }
 }
 
+test {
+    useTestNG()
+}

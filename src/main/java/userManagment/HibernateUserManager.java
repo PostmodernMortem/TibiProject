@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * Created by Wojtek on 2014-07-17.
  */
-//TODO
 public class HibernateUserManager implements Manager{
 
     private static HibernateUserManager entity;
@@ -192,10 +191,11 @@ public class HibernateUserManager implements Manager{
         return toFind;
     }
 
-    public void list() {
+    public List<User> list() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
         EntityManager em = null;
 
+        List<User> result = null;
         try {
             tm.begin();
 
@@ -221,7 +221,7 @@ public class HibernateUserManager implements Manager{
 
             String query4 = "db.User.find({})";
 
-            List<User> result = em.createNativeQuery( query4, User.class).getResultList();
+            result = em.createNativeQuery(query4, User.class).getResultList();
 //            System.out.println("******************WYJSCIE*************");
 //            for (Object x :count)
 //            System.out.println(x.toString());
@@ -235,15 +235,16 @@ public class HibernateUserManager implements Manager{
             //toFind = em.find( User.class, username);
             tm.commit();
 
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(em !=null){
+        } finally {
+            if (em != null) {
                 em.close();
             }
-            if(emf!=null){
+            if (emf != null) {
                 emf.close();
             }
         }
+        return result;
     }
 }
