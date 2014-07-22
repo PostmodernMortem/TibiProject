@@ -52,8 +52,8 @@ public class UserManagerProvider {
             return UserManager.getEntity();
         }else if (typeOfManager.equals("db")){
             return DatabaseUserManager.getEntity();
-        }else if (typeOfManager.equals("hibernate")){
-            return HibernateUserManager.getEntity();
+//        }else if (typeOfManager.equals("hibernate")){
+//            return HibernateUserManager.getEntity();
         }else{
             return null;
         }

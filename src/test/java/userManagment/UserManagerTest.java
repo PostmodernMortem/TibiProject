@@ -39,7 +39,7 @@ public class UserManagerTest {
         return new Object[][]{
                 {"txt"},
                 {"db"},
-                {"hibernate"},
+//                {"hibernate"},
         };
     }
 
@@ -107,7 +107,7 @@ public class UserManagerTest {
         }
 
 
-    @Test(dataProvider = "dane3")
+//    @Test(dataProvider = "dane3")
     public void testDeleteUser(String name, Integer age) throws Exception {
         User user = new User(name, age);
         Manager userManager = UserManagerProvider.getManager();
@@ -122,7 +122,7 @@ public class UserManagerTest {
 
 
 
-    @Test(dataProvider = "base")
+//    @Test(dataProvider = "base")
     public void testList(String db) throws Exception {
         Manager userManager = UserManagerProvider.getManager(db);
         List<User> list = userManager.list();

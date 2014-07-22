@@ -5,26 +5,18 @@ package userManagment;
 
 
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.search.annotations.*;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
+//@Entity
 public class User{
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+//    @Id
+//    @GeneratedValue(generator = "uuid")
+//    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
 
-    @Field
+//    @Field
     private Integer age;
-    @Field
+//    @Field
     private String name;
 
     /*Konstruktory*/
@@ -102,19 +94,19 @@ public class User{
         return "Uzytkownik [id=" + id + ", imie=" + name + ", wiek=" + age + "]";
     };
 
-    @Override
-    public boolean equals(Object obj){
-        if (!(obj instanceof User))
-            return false;
-        if (obj == this)
-            return true;
-
-        User rhs = (User) obj;
-        return new EqualsBuilder().
-                // if deriving: appendSuper(super.equals(obj)).
-                append(name, rhs.name).
-                append(age, rhs.age).
-                isEquals();
-    };
+//    @Override
+//    public boolean equals(Object obj){
+//        if (!(obj instanceof User))
+//            return false;
+//        if (obj == this)
+//            return true;
+//
+//        User rhs = (User) obj;
+//        return new EqualsBuilder().
+//                // if deriving: appendSuper(super.equals(obj)).
+//                append(name, rhs.name).
+//                append(age, rhs.age).
+//                isEquals();
+//    };
 
 }
