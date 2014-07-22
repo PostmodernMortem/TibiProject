@@ -53,19 +53,19 @@ public class User{
     ;
 
     /*odbiór i modyfikacja pól*/
-    void setAge(Integer age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
     ;
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     ;
 
-    void setId(String id1) {
+    public void setId(String id1) {
         this.id = id1;
     }
 

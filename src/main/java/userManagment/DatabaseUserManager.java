@@ -1,11 +1,11 @@
 package userManagment;
 
+import com.google.gson.Gson;
 import com.mongodb.*;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.Gson;
 
 /**
  * Created by Wojtek on 2014-07-15.
@@ -21,10 +21,10 @@ public class DatabaseUserManager implements Manager{
         return entity;
     }
 
-    public void addUser(User toAdd) {
+    public void addUser(User toAdd) throws Exception {
         if(findUser(toAdd.getName())!=null){
             System.out.println("Podany użytkownik istnieje");
-            return;
+            throw new Exception("Uzytkownik istnieje");
         }
         try {
             DBCollection table = openDbConnection();
@@ -107,11 +107,16 @@ public class DatabaseUserManager implements Manager{
             DBCursor cursor = table.find(searchQuery);
             Gson gson = new Gson();
             while (cursor.hasNext()) {
-                userList.add(gson.fromJson(cursor.toString(),User.class));
-                System.out.println(cursor.next());
+                System.out.println("ZACZYNAM");
+                System.out.println(cursor.toString());
+                userList.add(gson.fromJson(cursor.next().toString(),User.class));
+//                System.out.println(cursor.next());
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
+        }
+        if (userList == null) {
+            userList = new ArrayList<User>();
         }
         return userList;
     }
@@ -126,6 +131,6 @@ public class DatabaseUserManager implements Manager{
         DB db = mongo.getDB("testdb");
 
         /**** Get collection / table from 'testdb' ****/
-        return db.getCollection("user");
+        return db.getCollection("User");
     }
 }

@@ -48,7 +48,11 @@ public class App {
             }else {
                 Manager myManager = UserManagerProvider.getManager();
                 if (args[0].equals("add") &&numberOfArguments == 3) {
-                    myManager.addUser(new User(args[1], Integer.parseInt(args[2])));
+                    try {
+                        myManager.addUser(new User(args[1], Integer.parseInt(args[2])));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }else if (args[0].equals("delete") &&numberOfArguments == 2){
                     myManager.deleteUser(myManager.findUser(args[1]));
                 }else if (args[0].equals("find") &&numberOfArguments == 2) {
@@ -88,6 +92,8 @@ public class App {
                         myManager.addUser(new User(name, id));
                     } catch (NumberFormatException nfe) {
                         System.err.println("Invalid Format!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 } else if (s.equals("update")) {
                     System.out.println("Podaj nazwe uzytkowika: ");

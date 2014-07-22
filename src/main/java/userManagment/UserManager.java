@@ -22,17 +22,18 @@ public class UserManager implements Manager{
             return entity;
     };
 
-    public void addUser(User toBeAdded){
+    public void addUser(User toBeAdded) throws Exception{
         User found = findUser(toBeAdded.getName());
         if (found!=null) {
             System.out.println("Użytkownik o podanej nazwie istnieje.");
-            return;
+            throw new Exception("Uzytkownik o podanej nazwie istnieje");
         }
 
         addToBase(toBeAdded);
         System.out.println("Dodano użytkownika: " + toBeAdded.getName() + " o identyfikatorze " + toBeAdded.getAge());
         return;
     };
+
     public void modifyUser(String id, User toBeModified){
         if (search(id)==null || search(toBeModified.getName())!=null) {
             System.out.println("Użytkownik o podanej nazwie nie istnieje lub nowa nazwa jest zajeta.");
@@ -93,6 +94,9 @@ public class UserManager implements Manager{
                     e.printStackTrace();
                 }
             }
+        }
+        if (userList == null) {
+            userList = new ArrayList<User>();
         }
         return userList;
     };
@@ -181,7 +185,6 @@ public class UserManager implements Manager{
             while ((line = br.readLine()) != null) {
                 User toBeChecked = new User(line);
                 if (!toBeChecked.getName().equals(username)) {
-
                     pw.println(line);
                     pw.flush();
                 }

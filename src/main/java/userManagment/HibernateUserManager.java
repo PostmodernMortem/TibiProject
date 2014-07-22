@@ -1,18 +1,13 @@
 package userManagment;
 
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.hibernate.Session;
-import org.hibernate.search.FullTextQuery;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.query.dsl.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.transaction.TransactionManager;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,13 +24,16 @@ public class HibernateUserManager implements Manager{
     }
     if(tm ==null){
         tm = getTransactionManager();
+
     }
 
-      return entity;
+        return entity;
     };
 
     private static TransactionManager getTransactionManager() {
         try {
+
+
             Class<?> tmClass = HibernateUserManager.class.getClassLoader().loadClass("com.arjuna.ats.jta.TransactionManager");
 
             return (TransactionManager) tmClass.getMethod( "transactionManager" ).invoke( null );
@@ -51,10 +49,13 @@ public class HibernateUserManager implements Manager{
         return null;
     }
 
-    public void addUser(User toAdd) {
+    public void addUser(User toAdd) throws Exception {
+        if (findUser(toAdd.getName()) != null){
+            throw new Exception("Uzytkownik istnieje");
+        }
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
         EntityManager em = null;
-        System.out.print(toAdd.toString());
+//        System.out.print(toAdd.toString());
         try {
             tm.begin();
             em = emf.createEntityManager();
@@ -83,6 +84,7 @@ public class HibernateUserManager implements Manager{
             User temporary = findUser(username);
             if( temporary == null){
                 System.out.println("Nie znaleziono uzytkownika");
+                throw new NoResultException();
             }
             tm.begin();
             em = emf.createEntityManager();
@@ -112,16 +114,21 @@ public class HibernateUserManager implements Manager{
         EntityManager em = null;
 
         try {
-            User temporary = findUser(toBeDeleted.getName());
-            if( temporary != null){
-               System.out.println(temporary.getId());
-            }
             tm.begin();
+            Boolean loop = true;
             em = emf.createEntityManager();
+
+//                tm.begin();
+            User temporary = findUser(toBeDeleted.getName());
+            if (temporary != null) {
+                System.out.println(temporary.getId());
+            }
+
             //em.persist(temporary);
             em.remove(em.contains(temporary) ? temporary : em.merge(temporary));
             em.flush();
             tm.commit();
+
 
 
         } catch ( Exception e ) {
@@ -142,7 +149,7 @@ public class HibernateUserManager implements Manager{
         User toFind= null;
 
         try {
-            tm.begin();
+
 
             em = emf.createEntityManager();
 
@@ -163,23 +170,27 @@ public class HibernateUserManager implements Manager{
 //
 //            javax.persistence.Query jpaQuery =
 //                    fullTextEntityManager.createFullTextQuery(luceneQuery, User.class);
-
             String query4 = "db.User.find({'name': '"+username + "'})";
-
-            toFind = (User)em.createNativeQuery( query4, User.class).getSingleResult();
-            System.out.println("******************WYJSCIE*************");
-
-            System.out.println(toFind.toString());
+            toFind = null;
+            List<User> list = (List<User>) em.createNativeQuery( query4, User.class).getResultList();
+            if(list.isEmpty()){
+                toFind = null;
+            }else{
+                toFind = list.get(0);
+            }
+//
+//            System.out.println(toFind.toString());
 
 //            em.getTransaction().commit();
 
 
             //toFind = em.find( User.class, username);
-            tm.commit();
 
 
         } catch ( Exception e ) {
             e.printStackTrace();
+            toFind = null;
+
         }finally {
             if(em !=null){
                 em.close();
@@ -198,7 +209,6 @@ public class HibernateUserManager implements Manager{
         List<User> result = null;
         try {
             tm.begin();
-
             em = emf.createEntityManager();
 
 //            Session session = (org.hibernate.Session)em.getDelegate();
@@ -244,6 +254,9 @@ public class HibernateUserManager implements Manager{
             if (emf != null) {
                 emf.close();
             }
+        }
+        if (result == null) {
+            result = new ArrayList<User>();
         }
         return result;
     }
