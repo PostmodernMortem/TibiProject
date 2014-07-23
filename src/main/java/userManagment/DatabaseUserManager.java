@@ -86,7 +86,8 @@ public class DatabaseUserManager implements Manager{
                 BasicDBObject obj = (BasicDBObject) cursor.next();
                 //System.out.println(obj.getString("age"));
                 if(obj.getString("name").equals(username)) {
-                    toReturn = new User(username, Integer.parseInt(obj.getString("age")));
+                    Gson gson = new Gson();
+                    toReturn = gson.fromJson(obj.toString(),User.class);
                 }
             }
         } catch (UnknownHostException e) {

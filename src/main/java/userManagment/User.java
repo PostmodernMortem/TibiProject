@@ -4,14 +4,14 @@
 package userManagment;
 
 
+import org.bson.types.ObjectId;
 
-//@Entity
 public class User{
 
 //    @Id
 //    @GeneratedValue(generator = "uuid")
 //    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    private ObjectId _id;
 
 
 //    @Field
@@ -25,7 +25,11 @@ public class User{
     }
 
     ;
-
+    public User(ObjectId id, String name, Integer age){
+        this._id = id;
+        this.name = name;
+        this.age = age;
+    }
     public User(String name, Integer age) {
         this.age = age;
         this.name = name;
@@ -57,15 +61,15 @@ public class User{
 
     ;
 
-    public void setId(String id1) {
-        this.id = id1;
+    public void setId(ObjectId id1) {
+        this._id = id1;
     }
 
     ;
 
-    public String getId() {
+    public ObjectId getId() {
 
-        return id;
+        return _id;
     }
 
     ;
@@ -91,7 +95,7 @@ public class User{
 
     @Override
     public String toString() {
-        return "Uzytkownik [id=" + id + ", imie=" + name + ", wiek=" + age + "]";
+        return "Uzytkownik [id=" + _id + ", imie=" + name + ", wiek=" + age + "]";
     };
 
 //    @Override
