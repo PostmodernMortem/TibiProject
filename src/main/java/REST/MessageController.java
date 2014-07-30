@@ -40,6 +40,7 @@ public class MessageController {
             userManager.addUser(user);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return userManager.findUser(user.getName());
     }

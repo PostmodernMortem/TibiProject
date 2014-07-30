@@ -13,6 +13,8 @@ import java.util.List;
 public class DatabaseUserManager implements Manager{
 
     private static DatabaseUserManager entity=null;
+    private static MongoClient databaseClient = null;
+    private static DB database = null;
 
     static DatabaseUserManager getEntity(){
         if(entity==null){
@@ -127,11 +129,18 @@ public class DatabaseUserManager implements Manager{
     private DBCollection openDbConnection() throws UnknownHostException {
 
         /**** Connect to MongoDB ****/
-        MongoClient mongo = new MongoClient("localhost", 27017);
+        if (databaseClient == null) {
+            databaseClient = new MongoClient("localhost", 27017);
+        }
         /**** Get database ****/
-        DB db = mongo.getDB("testdb");
-
+        if (database == null) {
+            database = databaseClient.getDB("testdb");
+        }
         /**** Get collection / table from 'testdb' ****/
-        return db.getCollection("User");
+        return database.getCollection("User");
+    }
+
+    protected void finalize(){
+        databaseClient.close();
     }
 }
